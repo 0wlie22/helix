@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src="./assets/helix-logo.png" alt="helix logo" style="width:300px;" /></div>
+<p align="center"><img src="./assets/helix-logo.png" alt="helix logo" style="width:300px;" /></p>
 
 "**Helix** the quiz maker" offers users a simple and interactive option for learning new words and testing knowledge.
 
