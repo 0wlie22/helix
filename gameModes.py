@@ -56,8 +56,7 @@ def gameMode2(termGroupID):
 
 def gameMode3(termGroupID):
     termList = getTermList(termGroupID)
-    termList3 = []
-    unusedDefinitions = termList.copy()      
+    termList3 = []   
     for x in range(0, len(termList)//4):
         termData = {
                 "id": [None, None, None, None],
