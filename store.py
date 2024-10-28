@@ -225,7 +225,7 @@ class TermsStore:
     def update(self, term: Term) -> None:
         self._db.execute(
             "UPDATE terms SET group_id = ?, term = ?, definition = ?, mastery_coef = ?, total_ans = ?, correct_ans = ? WHERE id = ?",
-            (term.group_id, term.term, term.definition, term.mastery_coef, term.total_ans, term.correct_ans),
+            (term.group_id, term.term, term.definition, term.mastery_coef, term.total_ans, term.correct_ans, term.id),
         )
 
     def delete(self, term_id: int) -> None:
