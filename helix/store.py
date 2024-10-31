@@ -41,22 +41,24 @@ Examples:
     point = store.points.get(point.id)
     store.points.update(point)
     store.points.delete(point.id)
+
 """
 
 import sqlite3
 
-from models import Point, Term, TermGroup, User
+from helix.models import Point, Term, TermGroup, User
 
 
 class Store:
     """Store class implements the main interface for managing data in the database."""
 
     def __init__(self, database: str) -> None:
-        self._db = sqlite3.connect(database, autocommit=True)
+        self._db = sqlite3.connect(database)
 
         self.users = UsersStore(self._db)
         self.term_groups = TermGroupsStore(self._db)
         self.terms = TermsStore(self._db)
+        self.points = PointsStore(self._db)
 
 
 class UsersStore:
@@ -83,11 +85,7 @@ class UsersStore:
     def list(self) -> list[User]:
         res = self._db.execute("SELECT id, username FROM users")
 
-        users: list[User] = []
-        for row in res.fetchall():
-            users.append(User(id=row[0], username=row[1]))
-
-        return users
+        return [User(id=row[0], username=row[1]) for row in res.fetchall()]
 
     def get(self, user_id: int) -> User | None:
         res = self._db.execute("SELECT id, username FROM users WHERE id = ?", (user_id,))
@@ -130,11 +128,7 @@ class TermGroupsStore:
     def list(self) -> list[TermGroup]:
         res = self._db.execute("SELECT id, user_id, name FROM term_groups")
 
-        groups: list[TermGroup] = []
-        for row in res.fetchall():
-            groups.append(TermGroup(id=row[0], user_id=row[1], name=row[2]))
-
-        return groups
+        return [TermGroup(id=row[0], user_id=row[1], name=row[2]) for row in res.fetchall()]
 
     def get(self, group_id: int) -> TermGroup | None:
         res = self._db.execute("SELECT id, user_id, name FROM term_groups WHERE id = ?", (group_id,))
@@ -176,7 +170,7 @@ class TermsStore:
     def create(self, term: Term) -> Term:
         cur = self._db.cursor()
         cur.execute(
-            "INSERT INTO terms (group_id, term, definition, mastery_coef, total_ans, correct_ans) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO terms (group_id, term, definition, mastery_coef, total_ans, correct_ans) VALUES (?, ?, ?, ?, ?, ?)",  # noqa: E501
             (term.group_id, term.term, term.definition, term.mastery_coef, term.total_ans, term.correct_ans),
         )
         term.id = cur.lastrowid
@@ -187,21 +181,18 @@ class TermsStore:
     def list(self) -> list[Term]:
         res = self._db.execute("SELECT id, group_id, term, definition, mastery_coef, total_ans, correct_ans FROM terms")
 
-        terms: list[Term] = []
-        for row in res.fetchall():
-            terms.append(
-                Term(
-                    id=row[0],
-                    group_id=row[1],
-                    term=row[2],
-                    definition=row[3],
-                    mastery_coef=row[4],
-                    total_ans=row[5],
-                    correct_ans=row[6],
-                )
+        return [
+            Term(
+                id=row[0],
+                group_id=row[1],
+                term=row[2],
+                definition=row[3],
+                mastery_coef=row[4],
+                total_ans=row[5],
+                correct_ans=row[6],
             )
-
-        return terms
+            for row in res.fetchall()
+        ]
 
     def get(self, term_id: int) -> Term | None:
         res = self._db.execute(
@@ -224,8 +215,8 @@ class TermsStore:
 
     def update(self, term: Term) -> None:
         self._db.execute(
-            "UPDATE terms SET group_id = ?, term = ?, definition = ?, mastery_coef = ?, total_ans = ?, correct_ans = ? WHERE id = ?",
-            (term.group_id, term.term, term.definition, term.mastery_coef, term.total_ans, term.correct_ans),
+            "UPDATE terms SET group_id = ?, term = ?, definition = ?, mastery_coef = ?, total_ans = ?, correct_ans = ? WHERE id = ?",  # noqa: E501
+            (term.group_id, term.term, term.definition, term.mastery_coef, term.total_ans, term.correct_ans, term.id),
         )
 
     def delete(self, term_id: int) -> None:
@@ -258,11 +249,7 @@ class PointsStore:
     def list(self) -> list[Point]:
         res = self._db.execute("SELECT id, user_id, points FROM points")
 
-        points: list[Point] = []
-        for row in res.fetchall():
-            points.append(Point(id=row[0], user_id=row[1], points=row[2]))
-
-        return points
+        return [Point(id=row[0], user_id=row[1], points=row[2]) for row in res.fetchall()]
 
     def get(self, point_id: int) -> Point | None:
         res = self._db.execute("SELECT id, user_id, points FROM points WHERE id = ?", (point_id,))

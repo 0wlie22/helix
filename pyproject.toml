@@ -1,0 +1,45 @@
+[tool.ruff]
+exclude = [
+    ".git",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+]
+
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D",
+    "ANN101",
+    "ANN102",
+    "ANN401",
+    "N818",
+    "TRY003",
+    "PLR0913",
+    "COM812",
+    "SLF",
+    "TD",
+    "FIX",
+]
+
+fixable = ["ALL"]
+unfixable = ["F841"]
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+[tool.pyright]
+typeCheckingMode = "standard"
+useLibraryCodeForTypes = true
