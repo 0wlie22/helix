@@ -1,18 +1,49 @@
 # quiz.py
 
-from helix.models import Point, Term
+import logging
+
+from helix.exceptions import ActiveUserIsNotSetError, EntityNotFoundError, TermGroupIsNotSetError
+from helix.game_mode import GameMode
+from helix.models import Point, Term, TermGroup, User
 from helix.store import Store
 
 
 class Quiz:
-    def __init__(self, store: Store, user_id: int) -> None:
+    def __init__(self, store: Store) -> None:
         self.store = store
-        self.user_id = user_id
-        self.points = 0  # Track total points for this session
+        self.score = 0  # Active session score
+        self.active_user: User | None = None
+        self.term_group: TermGroup | None = None
+        self.game_mode: GameMode | None = None
+
+    def set_active_user(self, username: str) -> None:
+        """Set the active user for the quiz."""
+        try:
+            user = self.store.users.get_by_username(username)
+        except EntityNotFoundError:
+            logging.exception("User %q not found", username)
+            return
+
+        self.active_user = user
+
+    def get_active_user(self) -> User:
+        if self.active_user is None:
+            raise ActiveUserIsNotSetError
+
+        return self.active_user
+
+    def set_term_group(self, group: TermGroup) -> None:
+        self.term_group = group
+
+    def set_game_mode(self, mode: GameMode) -> None:
+        self.game_mode = mode
 
     def get_terms(self) -> list[Term]:
         """Retrieve all terms for the quiz."""
-        return self.store.terms.list()
+        if self.term_group is None:
+            raise TermGroupIsNotSetError
+
+        return self.store.terms.get_all_by_group_id(self.term_group.id)
 
     def check_answer(self, user_answer: str, correct_answer: str) -> bool:
         """Check if the user's answer matches the correct answer."""
@@ -20,42 +51,26 @@ class Quiz:
 
     def update_mastery(self, term: Term, *, correct: bool) -> None:
         """Update mastery coefficient and answer counts for the term."""
-        term.total_ans += 1
-        if correct:
-            term.correct_ans += 1
-            self.points += 1  # Increment points for correct answers
+        term.update_stats(correct=correct)
+        self.store.terms.update(term)
 
-        # Calculate new mastery coefficient
-        term.mastery_coef = term.correct_ans / term.total_ans
-        self.store.terms.update(term)  # Save changes to the database
+    def get_session_score(self) -> int:
+        return self.score
 
-    def update_user_points(self) -> None:
-        """Update the user's total points in the database."""
-        user_points = self.store.points.get(self.user_id)
-        if user_points:
-            user_points.points += self.points
-            self.store.points.update(user_points)
-        else:
-            # Create initial points record if it doesn't exist
-            self.store.points.create(Point(points=self.points, user_id=self.user_id))
+    def get_total_score(self) -> int:
+        if self.active_user is None:
+            raise ActiveUserIsNotSetError
 
-    def start_quiz(self) -> None:
-        """Run the quiz session."""
-        terms = self.get_terms()
-        print("Starting the quiz...")  # noqa: T201
+        return self.store.points.get_total_by_user_id(self.active_user.id)
 
-        for term in terms:
-            print(f"Define: {term.term}")  # noqa: T201
-            user_answer = input("Your answer: ")
+    def add_points(self, amount: int) -> None:
+        if self.active_user is None:
+            raise ActiveUserIsNotSetError
 
-            correct = self.check_answer(user_answer, term.definition)
-            if correct:
-                print("Correct!")  # noqa: T201
-            else:
-                print(f"Incorrect. The correct answer is: {term.definition}")  # noqa: T201
+        self.store.points.create(Point(points=amount, user_id=self.active_user.id))
 
-            self.update_mastery(term, correct=correct)
-
-        # Finalize by updating user points
-        self.update_user_points()
-        print(f"Quiz finished. You scored {self.points} points in this session.")  # noqa: T201
+    def reset(self) -> None:
+        self.score = 0
+        self.active_user = None
+        self.term_group = None
+        self.game_mode = None
