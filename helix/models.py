@@ -24,6 +24,12 @@ class Term:
     correct_ans: int = 0
     id: int | None = None
 
+    def __str__(self) -> str:
+        return f"{self.term}: {self.definition}"
+
+    def __iter__(self):
+        yield self
+
 
 @dataclass
 class Point:

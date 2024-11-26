@@ -46,7 +46,7 @@ Examples:
 
 import sqlite3
 
-from helix.models import Point, Term, TermGroup, User
+from models import Point, Term, TermGroup, User
 
 
 class Store:
@@ -95,6 +95,14 @@ class UsersStore:
             return User(id=row[0], username=row[1])
         return None
 
+    def get_by_username(self, username: str) -> User | None:
+        res = self._db.execute("SELECT id, username FROM users WHERE username = ?", (username,))
+        row = res.fetchone()
+
+        if row:
+            return User(id=row[0], username=row[1])
+        return None
+
     def update(self, user: User) -> None:
         self._db.execute("UPDATE users SET username = ? WHERE id = ?", (user.username, user.id))
 
@@ -137,6 +145,7 @@ class TermGroupsStore:
         if row:
             return TermGroup(id=row[0], user_id=row[1], name=row[2])
         return None
+
 
     def update(self, group: TermGroup) -> None:
         self._db.execute(

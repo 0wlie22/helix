@@ -1,13 +1,14 @@
 import sys
+# import sass
 
-from main_ui import AuthorizationScreen
+from start_screen import StartScreen
 from PySide6.QtWidgets import QApplication, QMainWindow
-from settings import FONT
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
     MainWindow = QMainWindow()
-    ui = AuthorizationScreen()
-    ui.setupUi(MainWindow)
+    ui = StartScreen()
+    ui.setup_ui(MainWindow)
     MainWindow.show()
     sys.exit(app.exec())

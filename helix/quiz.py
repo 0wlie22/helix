@@ -1,7 +1,7 @@
 # quiz.py
 
-from helix.models import Point, Term
-from helix.store import Store
+from models import Point, Term
+from store import Store
 
 
 class Quiz:
