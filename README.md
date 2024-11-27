@@ -19,8 +19,5 @@ mise trust
 pip install -r requirements.txt
 
 # Start the application
-python main.py
+python helix/main.py
 ```
-
-
-
