@@ -32,7 +32,7 @@ class StartScreen(object):
         # Header
         self.header = QLabel(self.centralwidget)
         self.header.setGeometry(QRect(1, -3, 813, 555))
-        self.header.setFont(QFont("Helvetica", 25, QFont.Bold)) #type: ignore
+        self.header.setFont(QFont("Helvetica", 25, QFont.Bold))  # type: ignore
         self.header.setPixmap(QPixmap("./assets/header.png"))
 
         # Logo on the header
@@ -46,7 +46,7 @@ class StartScreen(object):
         self.lets_go_button = QPushButton(self.centralwidget)
         self.lets_go_button.setObjectName("pushButton")
         self.lets_go_button.setGeometry(QRect(285, 345, 226, 61))
-        self.lets_go_button.setFont(QFont("Helvetica", 25, QFont.Bold)) #type: ignore
+        self.lets_go_button.setFont(QFont("Helvetica", 25, QFont.Bold))  # type: ignore
         self.lets_go_button.setStyleSheet("background-color: #666666; border-radius: 5px; color: #cadbdd")
         self.lets_go_button.clicked.connect(self.go_to_authorization_screen)
 

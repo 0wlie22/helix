@@ -39,7 +39,7 @@ class DictionaryScreen(object):
         # Header Label
         self.header_label = QLabel(self.centralwidget)
         self.header_label.setGeometry(QRect(135, 45, 271, 46))
-        self.header_label.setFont(QFont("Helvetica", 40, QFont.Bold)) #type: ignore
+        self.header_label.setFont(QFont("Helvetica", 40, QFont.Bold))  # type: ignore
         self.header_label.setStyleSheet("background-color: transparent; color: #666666;")
         self.header_label.setText("DICTIONARY")
 
@@ -65,8 +65,10 @@ class DictionaryScreen(object):
 
         self.start_quiz_button = QPushButton("START QUIZ", self.centralwidget)
         self.start_quiz_button.setGeometry(QRect(30, 520, 736, 61))
-        self.start_quiz_button.setFont(QFont("Helvetica", 25, QFont.Bold)) #type: ignore
-        self.start_quiz_button.setStyleSheet("background-color: transparent; color: #666666; border-radius: 5px; border-style: solid; border-width: 1px;")
+        self.start_quiz_button.setFont(QFont("Helvetica", 25, QFont.Bold))  # type: ignore
+        self.start_quiz_button.setStyleSheet(
+            "background-color: transparent; color: #666666; border-radius: 5px; border-style: solid; border-width: 1px;"
+        )
         self.start_quiz_button.clicked.connect(lambda: self.go_to_quiz_screen())
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -196,7 +198,7 @@ class DictionaryScreen(object):
 
         self.add_new_term_button.close()
         self.scroll_menu.close()
-        
+
         self.word_label = QLabel("Word:", self.centralwidget)
         self.word_label.setGeometry(QRect(115, 250, 100, 30))
         self.word_label.setFont(QFont("Helvetica", 20))
@@ -206,7 +208,7 @@ class DictionaryScreen(object):
         self.definition_label.setGeometry(QRect(115, 300, 150, 30))
         self.definition_label.setFont(QFont("Helvetica", 20))
         self.definition_label.setStyleSheet("color: #666666;")
-        
+
         self.word_input = QLineEdit(self.centralwidget)
         self.word_input.setGeometry(QRect(300, 250, 400, 30))
         self.word_input.setStyleSheet("font-size: 18px; color: #666666;")

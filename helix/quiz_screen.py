@@ -52,7 +52,9 @@ class QuizScreen:
         self.setup_input_section()
 
         # Message label for feedback
-        self.message_label = self.create_label(120, 440, 601, 30, "Helvetica", 16, "color: #666666; text-align: center;")
+        self.message_label = self.create_label(
+            120, 440, 601, 30, "Helvetica", 16, "color: #666666; text-align: center;"
+        )
         self.message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.MainWindow.setCentralWidget(self.centralwidget)
@@ -75,14 +77,23 @@ class QuizScreen:
         self.logo.setPixmap(QPixmap("./assets/helix-log-small.png"))
         self.logo.setScaledContents(True)
 
-        self.header_label = self.create_label(135, 45, 271, 46, "Helvetica", 40, 
-                                              "background-color: transparent; color: #666666;", bold=True)
+        self.header_label = self.create_label(
+            135, 45, 271, 46, "Helvetica", 40, "background-color: transparent; color: #666666;", bold=True
+        )
 
     def setup_definition_display(self):
         """Set up the definition display section."""
-        self.definition_label = self.create_label(120, 300, 601, 61, "Helvetica", 20, 
-                                                  "border-style: solid; border-radius: 5px; color: #666666; border-color: #666666; text-indent: 5px", 
-                                                  bold=True, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.definition_label = self.create_label(
+            120,
+            300,
+            601,
+            61,
+            "Helvetica",
+            20,
+            "border-style: solid; border-radius: 5px; color: #666666; border-color: #666666; text-indent: 5px",
+            bold=True,
+            alignment=Qt.AlignmentFlag.AlignCenter,
+        )
         self.scroll_area = QScrollArea(self.centralwidget)
         self.scroll_area.setGeometry(120, 300, 601, 61)
         self.scroll_area.setWidgetResizable(True)
@@ -101,7 +112,9 @@ class QuizScreen:
         self.submit_button.setFont(QFont("Helvetica", 20))
         self.submit_button.setStyleSheet("color: #cadbdd; background-color: #666666; border-radius: 5px")
 
-    def create_label(self, x, y, width, height, font_family, font_size, style, bold=False, alignment=Qt.AlignmentFlag.AlignLeft):
+    def create_label(
+        self, x, y, width, height, font_family, font_size, style, bold=False, alignment=Qt.AlignmentFlag.AlignLeft
+    ):
         """Helper function to create a QLabel."""
         label = QLabel(self.centralwidget)
         label.setGeometry(x, y, width, height)
@@ -158,12 +171,22 @@ class QuizScreen:
     def show_final_message(self, score, total):
         """Display the final score and provide navigation back to the main page."""
         # Hide quiz elements
-        for widget in [self.term_input, self.definition_label, self.submit_button, self.message_label, self.scroll_area]:
+        for widget in [
+            self.term_input,
+            self.definition_label,
+            self.submit_button,
+            self.message_label,
+            self.scroll_area,
+        ]:
             widget.close()
 
         # Show final score and message
-        self.create_label(100, 200, 600, 50, "Helvetica", 18, "color: #666666", alignment=Qt.AlignmentFlag.AlignCenter).setText("You answered all the questions!")
-        self.create_label(100, 270, 600, 50, "Helvetica", 18, "color: #666666", bold=True, alignment=Qt.AlignmentFlag.AlignCenter).setText(f"Score: {score}/{total}")
+        self.create_label(
+            100, 200, 600, 50, "Helvetica", 18, "color: #666666", alignment=Qt.AlignmentFlag.AlignCenter
+        ).setText("You answered all the questions!")
+        self.create_label(
+            100, 270, 600, 50, "Helvetica", 18, "color: #666666", bold=True, alignment=Qt.AlignmentFlag.AlignCenter
+        ).setText(f"Score: {score}/{total}")
 
         self.to_main_page_button = QPushButton(self.centralwidget)
         self.to_main_page_button.setGeometry(300, 350, 200, 50)

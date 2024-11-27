@@ -149,13 +149,11 @@ class TermGroupsStore:
         if row:
             return TermGroup(id=row[0], user_id=row[1], name=row[2])
         return None
-    
 
     def get_by_user_id(self, user_id: int):
         res = self._db.execute("SELECT id, user_id, name FROM term_groups WHERE user_id = ?", (user_id,))
 
         return [TermGroup(id=row[0], user_id=row[1], name=row[2]) for row in res.fetchall()]
-
 
     def update(self, group: TermGroup) -> None:
         self._db.execute(

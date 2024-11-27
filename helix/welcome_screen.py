@@ -1,6 +1,6 @@
-from PySide6.QtCore import * #type: ignore
-from PySide6.QtGui import * #type: ignore
-from PySide6.QtWidgets import * #type: ignore
+from PySide6.QtCore import *  # type: ignore
+from PySide6.QtGui import *  # type: ignore
+from PySide6.QtWidgets import *  # type: ignore
 from store import User, Store
 from categories_screen import CategoriesScreen
 import logging
@@ -49,7 +49,7 @@ class WelcomeScreen:
         # Welcome label
         self.welcome_user_label = QLabel(self.centralwidget)
         self.welcome_user_label.setGeometry(QRect(75, 360, 391, 61))
-        self.welcome_user_label.setFont(QFont("Helvetica", 20, QFont.Bold)) #type: ignore
+        self.welcome_user_label.setFont(QFont("Helvetica", 20, QFont.Bold))  # type: ignore
         self.welcome_user_label.setStyleSheet("background-color: transparent; color: #666666; font-size: 40px;")
 
         # Dictionary button

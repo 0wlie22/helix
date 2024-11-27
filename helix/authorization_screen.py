@@ -40,7 +40,7 @@ class AuthorizationScreen:
         # Choose user label
         self.choose_user_label = QLabel(self.centralwidget)
         self.choose_user_label.setGeometry(QRect(115, 300, 256, 31))
-        self.choose_user_label.setFont(QFont("Helvetica", 30, QFont.Bold)) #type: ignore
+        self.choose_user_label.setFont(QFont("Helvetica", 30, QFont.Bold))  # type: ignore
         self.choose_user_label.setStyleSheet("color: #666666")
 
         # Users drop-down menu
@@ -59,14 +59,14 @@ class AuthorizationScreen:
         # Submit button
         self.submit_button = QPushButton("SUBMIT", self.centralwidget)
         self.submit_button.setGeometry(QRect(570, 450, 196, 61))
-        self.submit_button.setFont(QFont("Helvetica", 25, QFont.Bold)) #type: ignore
+        self.submit_button.setFont(QFont("Helvetica", 25, QFont.Bold))  # type: ignore
         self.submit_button.setStyleSheet("color: #cadbdd; background-color: #666666; border-radius: 5px")
         self.submit_button.clicked.connect(self.go_to_welcome_page)
 
         # Add user (on another screen) button
         self.add_user_button = QPushButton("ADD", self.centralwidget)
         self.add_user_button.setGeometry(QRect(570, 450, 196, 61))
-        self.add_user_button.setFont(QFont("Helvetica", 25, QFont.Bold)) #type: ignore
+        self.add_user_button.setFont(QFont("Helvetica", 25, QFont.Bold))  # type: ignore
         self.add_user_button.setStyleSheet("color: #cadbdd; background-color: #666666; border-radius: 5px")
         self.add_user_button.clicked.connect(lambda: self.add_user_to_db())
         self.add_user_button.hide()
@@ -92,7 +92,7 @@ class AuthorizationScreen:
 
         self.input_username_text_label = QLabel("Input username:", self.centralwidget)
         self.input_username_text_label.setGeometry(QRect(115, 300, 256, 31))
-        self.input_username_text_label.setFont(QFont("Helvetica", 30, QFont.Bold)) #type: ignore
+        self.input_username_text_label.setFont(QFont("Helvetica", 30, QFont.Bold))  # type: ignore
         self.input_username_text_label.setStyleSheet("color: #666666")
         self.input_username_text_label.show()
 

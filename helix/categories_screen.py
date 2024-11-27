@@ -57,7 +57,7 @@ class CategoriesScreen:
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area_widget_contents = QWidget()
         self.scroll_area.setWidget(self.scroll_area_widget_contents)
-        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded) #type: ignore
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)  # type: ignore
         self.scroll_area.setStyleSheet("border-radius: 0px")
 
         # Get categories and add a default one
@@ -83,7 +83,7 @@ class CategoriesScreen:
         # Add header label
         self.header_label = QLabel(self.centralwidget)
         self.header_label.setGeometry(QRect(135, 45, 271, 46))
-        self.header_label.setFont(QFont("Helvetica", 40, QFont.Bold)) #type: ignore
+        self.header_label.setFont(QFont("Helvetica", 40, QFont.Bold))  # type: ignore
         self.header_label.setStyleSheet("background-color: transparent; color: #666666; font-size: 40px;")
 
         self.MainWindow.setCentralWidget(self.centralwidget)
@@ -196,7 +196,9 @@ class CategoriesScreen:
         self.logger.debug("Retranslating the new category screen UI")
 
         self.input_category_text_label.setText(QCoreApplication.translate("self.MainWindow", "Category:", None))
-        self.category_text.setPlaceholderText(QCoreApplication.translate("self.MainWindow", "Enter category name", None))
+        self.category_text.setPlaceholderText(
+            QCoreApplication.translate("self.MainWindow", "Enter category name", None)
+        )
         self.add_category_button.setText(QCoreApplication.translate("self.MainWindow", "ADD", None))
         self.add_category_button.show()
 
