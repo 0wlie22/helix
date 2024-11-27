@@ -13,7 +13,7 @@ def test_create_term(store):
     term = Term(
         id=None,
         group_id=1,
-        term="Test Term",
+        word="Test Term",
         definition="Test Definition",
         mastery_coef=0,
         total_ans=0,
@@ -31,7 +31,7 @@ def test_list_terms(store):
     term1 = Term(
         id=None,
         group_id=1,
-        term="Term 1",
+        word="Term 1",
         definition="Definition 1",
         mastery_coef=0,
         total_ans=0,
@@ -40,7 +40,7 @@ def test_list_terms(store):
     term2 = Term(
         id=None,
         group_id=2,
-        term="Term 2",
+        word="Term 2",
         definition="Definition 2",
         mastery_coef=0,
         total_ans=0,
@@ -59,7 +59,7 @@ def test_get_term(store):
     term = Term(
         id=None,
         group_id=1,
-        term="Test Term",
+        word="Test Term",
         definition="Test Definition",
         mastery_coef=0,
         total_ans=0,
@@ -77,7 +77,7 @@ def test_update_term(store):
     term = Term(
         id=None,
         group_id=1,
-        term="Test Term",
+        word="Test Term",
         definition="Test Definition",
         mastery_coef=0,
         total_ans=0,
@@ -95,7 +95,7 @@ def test_delete_term(store):
     term = Term(
         id=None,
         group_id=1,
-        term="Test Term",
+        word="Test Term",
         definition="Test Definition",
         mastery_coef=0,
         total_ans=0,

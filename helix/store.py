@@ -46,7 +46,7 @@ Examples:
 
 import sqlite3
 
-from helix.models import Point, Term, TermGroup, User
+from models import Point, Term, TermGroup, User
 
 
 class Store:
@@ -79,6 +79,7 @@ class UsersStore:
         cur.execute("INSERT INTO users (username) VALUES (?)", (user.username,))
         user.id = cur.lastrowid
         cur.close()
+        self._db.commit()
 
         return user
 
@@ -95,11 +96,21 @@ class UsersStore:
             return User(id=row[0], username=row[1])
         return None
 
+    def get_by_username(self, username: str) -> User | None:
+        res = self._db.execute("SELECT id, username FROM users WHERE username = ?", (username,))
+        row = res.fetchone()
+
+        if row:
+            return User(id=row[0], username=row[1])
+        return None
+
     def update(self, user: User) -> None:
         self._db.execute("UPDATE users SET username = ? WHERE id = ?", (user.username, user.id))
+        self._db.commit()
 
     def delete(self, user_id: int) -> None:
         self._db.execute("DELETE FROM users WHERE id = ?", (user_id,))
+        self._db.commit()
 
 
 class TermGroupsStore:
@@ -113,7 +124,7 @@ class TermGroupsStore:
         self._db.execute("""CREATE TABLE IF NOT EXISTS term_groups (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
-            name VARCHAR(64) UNIQUE,
+            name VARCHAR(64),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )""")
 
@@ -122,6 +133,7 @@ class TermGroupsStore:
         cur.execute("INSERT INTO term_groups (name, user_id) VALUES (?, ?)", (group.name, group.user_id))
         group.id = cur.lastrowid
         cur.close()
+        self._db.commit()
 
         return group
 
@@ -138,14 +150,21 @@ class TermGroupsStore:
             return TermGroup(id=row[0], user_id=row[1], name=row[2])
         return None
 
+    def get_by_user_id(self, user_id: int):
+        res = self._db.execute("SELECT id, user_id, name FROM term_groups WHERE user_id = ?", (user_id,))
+
+        return [TermGroup(id=row[0], user_id=row[1], name=row[2]) for row in res.fetchall()]
+
     def update(self, group: TermGroup) -> None:
         self._db.execute(
             "UPDATE term_groups SET user_id = ?, name = ? WHERE id = ?",
             (group.user_id, group.name, group.id),
         )
+        self._db.commit()
 
     def delete(self, group_id: int) -> None:
         self._db.execute("DELETE FROM term_groups WHERE id = ?", (group_id,))
+        self._db.commit()
 
 
 class TermsStore:
@@ -175,6 +194,7 @@ class TermsStore:
         )
         term.id = cur.lastrowid
         cur.close()
+        self._db.commit()
 
         return term
 
@@ -213,14 +233,35 @@ class TermsStore:
             )
         return None
 
+    def get_by_group_id(self, group_id: int):
+        res = self._db.execute(
+            "SELECT id, group_id, term, definition, mastery_coef, total_ans, correct_ans FROM terms WHERE group_id = ?",  # noqa: E501
+            (group_id,),
+        )
+
+        return [
+            Term(
+                id=row[0],
+                group_id=row[1],
+                term=row[2],
+                definition=row[3],
+                mastery_coef=row[4],
+                total_ans=row[5],
+                correct_ans=row[6],
+            )
+            for row in res.fetchall()
+        ]
+
     def update(self, term: Term) -> None:
         self._db.execute(
             "UPDATE terms SET group_id = ?, term = ?, definition = ?, mastery_coef = ?, total_ans = ?, correct_ans = ? WHERE id = ?",  # noqa: E501
             (term.group_id, term.term, term.definition, term.mastery_coef, term.total_ans, term.correct_ans, term.id),
         )
+        self._db.commit()
 
     def delete(self, term_id: int) -> None:
         self._db.execute("DELETE FROM terms WHERE id = ?", (term_id,))
+        self._db.commit()
 
 
 class PointsStore:
@@ -243,6 +284,7 @@ class PointsStore:
         cur.execute("INSERT INTO points (user_id, points) VALUES (?, ?)", (point.user_id, point.points))
         point.id = cur.lastrowid
         cur.close()
+        self._db.commit()
 
         return point
 
@@ -263,6 +305,8 @@ class PointsStore:
         self._db.execute(
             "UPDATE points SET user_id = ?, points = ? WHERE id = ?", (point.user_id, point.points, point.id)
         )
+        self._db.commit()
 
     def delete(self, point_id: int) -> None:
         self._db.execute("DELETE FROM points WHERE id = ?", (point_id,))
+        self._db.commit()
