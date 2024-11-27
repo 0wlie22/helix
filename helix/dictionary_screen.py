@@ -110,11 +110,11 @@ class DictionaryScreen(object):
                     h_layout.setStretch(1, 1)
                     layout.addLayout(h_layout)
             else:
-                placeholder = QLabel("No terms found, press '+' to add a new one", self.scroll_area_widget_contents)
-                placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                placeholder.setStyleSheet("color: #666666;")
-                placeholder.setFont(QFont("Helvetica", 20))
-                placeholder.setGeometry(QRect(0, 0, 736, 300))
+                self.placeholder = QLabel("No terms found, press '+' to add a new one", self.scroll_area_widget_contents)
+                self.placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.placeholder.setStyleSheet("color: #666666;")
+                self.placeholder.setFont(QFont("Helvetica", 20))
+                self.placeholder.setGeometry(QRect(0, 0, 736, 300))
 
         self.scroll_area_widget_contents.setLayout(layout)
 
@@ -122,6 +122,7 @@ class DictionaryScreen(object):
         """Shows input fields for adding a new term."""
         self.logger.debug("Adding new term screen")
 
+        self.placeholder.close()
         self.add_new_term_button.close()
         self.scroll_menu.close()
 
