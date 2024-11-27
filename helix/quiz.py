@@ -1,5 +1,3 @@
-# quiz.py
-
 from models import Point, Term
 from store import Store
 
